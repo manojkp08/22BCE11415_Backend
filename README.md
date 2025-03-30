@@ -57,7 +57,17 @@ docker-compose up --build
 | GET       | `/auth/google`              | Initiate Google OAuth login          | None              |
 | GET       | `/auth/google/callback`     | OAuth callback handler               | None              |
 | GET       | `/api/files`                | List all user files                  | JWT Required      |
-| DELETE    | `/api/files/{id}`           | Delete a specific file               | JWT Required      |
+| DELETE    | `/api/files/{id}`           | Delete a specific file               | JWT Required      | 
+
+## 📷 Screenshot (Postman Testing)
+
+![Screenshot from 2025-03-31 00-28-03](https://github.com/user-attachments/assets/6fe134e3-1a17-4a01-b43d-5bf921610d24)
+![Screenshot from 2025-03-31 00-28-18](https://github.com/user-attachments/assets/7130f85f-cfee-474c-98c4-12e50450463e)
+![Screenshot from 2025-03-31 00-28-34](https://github.com/user-attachments/assets/8896a089-43f4-4615-857e-e3ab8b211c3d)
+![Screenshot from 2025-03-31 00-32-15](https://github.com/user-attachments/assets/96e7b7e1-73b9-4a52-99a5-56fd67634202)
+![Screenshot from 2025-03-31 00-33-20](https://github.com/user-attachments/assets/1f56cefa-c9ba-4cf7-bd0b-6283c7877f0c)
+
+
 
 ## 🔧 Configuration
 
