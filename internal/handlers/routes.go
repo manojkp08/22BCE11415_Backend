@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/manojkp08/22BCE11415_Backend/pkg/middleware"
 )
@@ -12,7 +14,8 @@ func SetupRoutes(router *gin.Engine) {
 
 	// File routes (protected with JWT auth)
 	authGroup := router.Group("/")
-	authGroup.Use(middleware.AuthMiddleware())
+	// authGroup.Use(middleware.AuthMiddleware(), middleware.RateLimit(100, time.Minute))
+	authGroup.Use(middleware.AuthMiddleware(), middleware.RateLimit(100, time.Minute))
 	{
 		authGroup.POST("/upload", UploadFile)
 		authGroup.GET("/files", GetUserFiles)

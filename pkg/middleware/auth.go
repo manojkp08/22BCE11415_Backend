@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/manojkp08/22BCE11415_Backend/internal/auth"
+	"github.com/manojkp08/22BCE11415_Backend/internal/database"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
