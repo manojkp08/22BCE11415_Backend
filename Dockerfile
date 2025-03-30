@@ -18,7 +18,7 @@ WORKDIR /app
 
 # Copy binary from build stage
 COPY --from=build /app/main .
-COPY --from=build /app/uploads ./uploads
+# COPY --from=build /app/uploads ./uploads
 
 # Create directory for uploads
 RUN mkdir -p /app/uploads && \
