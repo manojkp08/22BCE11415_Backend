@@ -27,6 +27,7 @@ func main() {
 
 	// Set up router
 	router := gin.Default()
+	handlers.SetupRoutes(router)
 
 	// Auth routes
 	router.GET("/auth/google/login", handlers.GoogleLoginHandler)
