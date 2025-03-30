@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.24-alpine
+FROM golang:1.24-alpine AS build
 WORKDIR /app
 
 # Copy go mod files
@@ -14,17 +14,15 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
 
 # Final stage
 FROM alpine:latest
-
 WORKDIR /app
 
-# Copy binary from builder
-COPY --from=builder /app/main .
-COPY --from=builder /app/uploads ./uploads
+# Copy binary from build stage
+COPY --from=build /app/main .
+COPY --from=build /app/uploads ./uploads
 
 # Create directory for uploads
 RUN mkdir -p /app/uploads && \
     chmod -R 777 /app/uploads
 
 EXPOSE 8080
-
 CMD ["./main"]
