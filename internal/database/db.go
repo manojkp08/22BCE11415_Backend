@@ -1,6 +1,7 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"log"
 	"time"
@@ -206,7 +207,7 @@ func DeleteFile(fileID string) error {
 	}
 
 	// Invalidate cache if exists
-	if err := cache.InvalidateFileCache(fileID); err != nil {
+	if err := cache.InvalidateCache(context.Background(), fileID); err != nil {
 		log.Printf("Error invalidating cache for file %s: %v", fileID, err)
 		// Don't fail the operation just because cache invalidation failed
 	}

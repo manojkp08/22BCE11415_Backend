@@ -11,6 +11,8 @@ type Config struct {
 	GoogleClientID    string
 	GoogleSecret      string
 	GoogleRedirectURL string
+	RedisAddr         string
+	RedisPassword     string
 	DBConnection      string
 	JWTSecret         string
 }

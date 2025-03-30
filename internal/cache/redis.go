@@ -2,35 +2,42 @@ package cache
 
 import (
 	"context"
+	"log"
 	"time"
 
-	"github.com/redis/go-redis/v9"
+	"github.com/go-redis/redis"
 )
 
 var (
-	RedisClient *redis.Client
-	ctx         = context.Background()
+	Client *redis.Client
 )
 
-func InitRedis(addr string) error {
-	RedisClient = redis.NewClient(&redis.Options{
+func InitRedis(addr, password string) error {
+	Client = redis.NewClient(&redis.Options{
 		Addr:     addr,
-		Password: "", // no password set
-		DB:       0,  // use default DB
+		Password: password,
+		DB:       0,
 	})
 
-	_, err := RedisClient.Ping(ctx).Result()
-	return err
+	_, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := Client.Ping().Result()
+	if err != nil {
+		return err
+	}
+	log.Println("Connected to Redis")
+	return nil
 }
 
-func SetFileMetadata(fileID string, file interface{}, expiration time.Duration) error {
-	return RedisClient.Set(ctx, "file:"+fileID, file, expiration).Err()
+func SetFileMetadata(ctx context.Context, fileID string, data interface{}, ttl time.Duration) error {
+	return Client.Set("file:"+fileID, data, ttl).Err()
 }
 
-func GetFileMetadata(fileID string) (string, error) {
-	return RedisClient.Get(ctx, "file:"+fileID).Result()
+func GetFileMetadata(ctx context.Context, fileID string) (string, error) {
+	return Client.Get("file:" + fileID).Result()
 }
 
-func InvalidateFileCache(fileID string) error {
-	return RedisClient.Del(ctx, "file:"+fileID).Err()
+func InvalidateCache(ctx context.Context, key string) error {
+	return Client.Del(key).Err()
 }

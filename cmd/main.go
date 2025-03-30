@@ -10,6 +10,7 @@ import (
 	"github.com/manojkp08/22BCE11415_Backend/internal/config"
 	"github.com/manojkp08/22BCE11415_Backend/internal/database"
 	"github.com/manojkp08/22BCE11415_Backend/internal/handlers"
+	"github.com/manojkp08/22BCE11415_Backend/internal/worker"
 )
 
 func main() {
@@ -24,11 +25,9 @@ func main() {
 	}
 
 	// Initialize Redis cache
-	if err := cache.InitRedis(cfg.RedisAddr); err != nil {
+	if err := cache.InitRedis(cfg.RedisAddr, cfg.RedisPassword); err != nil {
 		log.Fatal("Failed to connect to Redis: ", err)
 	}
-	//Initializing websocket
-	go websocket.StartHub()
 
 	// Initialize Google OAuth
 	auth.InitGoogleOAuth(
@@ -41,10 +40,5 @@ func main() {
 	router := gin.Default()
 	handlers.SetupRoutes(router)
 
-	// Auth routes
-	// router.GET("/auth/google/login", handlers.GoogleLoginHandler)
-	// router.GET("/auth/google/callback", handlers.GoogleCallbackHandler)
-
-	// Start server
 	router.Run(":8080")
 }

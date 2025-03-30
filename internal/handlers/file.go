@@ -15,6 +15,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/manojkp08/22BCE11415_Backend/internal/cache"
 	"github.com/manojkp08/22BCE11415_Backend/internal/database"
+	"github.com/manojkp08/22BCE11415_Backend/internal/websocket"
 )
 
 // func UploadFile(c *gin.Context) {
@@ -135,7 +136,8 @@ func UploadFile(c *gin.Context) {
 
 		// Cache the file metadata
 		fileJson, _ := json.Marshal(createdFile)
-		if err := cache.SetFileMetadata(fileID, string(fileJson), 24*time.Hour); err != nil {
+		ctx := c.Request.Context() // Use the context from the HTTP request
+		if err := cache.SetFileMetadata(ctx, fileID, string(fileJson), 24*time.Hour); err != nil {
 			log.Printf("Failed to cache file metadata: %v", err)
 		}
 
@@ -226,7 +228,7 @@ func DownloadFile(c *gin.Context) {
 	fileID := c.Param("id")
 
 	// Check cache first
-	cachedFile, err := cache.GetFileMetadata(fileID)
+	cachedFile, err := cache.GetFileMetadata(c.Request.Context(), fileID)
 	if err == nil {
 		var file database.File
 		if err := json.Unmarshal([]byte(cachedFile), &file); err == nil {

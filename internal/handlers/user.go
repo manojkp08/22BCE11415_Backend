@@ -26,14 +26,13 @@ func GoogleCallbackHandler(c *gin.Context) {
 		return
 	}
 
-	// Generate JWT token
+	// Generating JWT token
 	token, err := auth.GenerateJWTToken(user.ID, user.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
 
-	// In production, you might want to set this as HTTP-only cookie
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 		"user":  user,
